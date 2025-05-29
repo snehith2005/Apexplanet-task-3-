@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Quiz App</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="question"></div>
+        <div class="options"></div>
+        <button class="btn">Next</button>
+        <div class="result"></div>
+    </div>
+
+    <script>
+        const quiz_data = [
+            {
+                question: "What is 5 + 5?",
+                options: ['8', '9', '10', '11'],
+                answer: '10',
+            },
+            {
+                question: "What is the capital of India?",
+                options: ["Delhi", "Mumbai", "Rajasthan", "Madhya Pradesh"],
+                answer: "Delhi"
+            },
+            {
+                question: "Who is the Prime Minister of India?",
+                options: ["Narendra Modi", "Manmohan Singh", "Indira Gandhi", "Rahul Gandhi"],
+                answer: "Narendra Modi"
+            }
+        ];
+
+        let current = 0;
+        let score = 0;
+
+        const questionDiv = document.querySelector(".question");
+        const optionsDiv = document.querySelector(".options");
+        const resultDiv = document.querySelector(".result");
+        const nextBtn = document.querySelector(".btn");
+
+        function showQuestion() {
+            const q = quiz_data[current];
+            questionDiv.innerText = q.question;
+            optionsDiv.innerHTML = "";
+            resultDiv.innerText = "";
+
+            q.options.forEach(choice => {
+                const btn = document.createElement("button");
+                btn.innerText = choice;
+                btn.onclick = () => {
+                    if (choice === q.answer) {
+                        score++;
+                        resultDiv.innerText = `Correct! You selected: ${choice}`;
+                    } else {
+                        resultDiv.innerText = `Wrong! You selected: ${choice}`;
+                    }
+                };
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        nextBtn.onclick = () => {
+            current++;
+            if (current < quiz_data.length) {
+                showQuestion();
+            } else {
+                document.querySelector(".quiz-container").innerHTML =
+                    `<h2>Your Score: ${score} / ${quiz_data.length}</h2>`;
+            }
+        };
+
+        showQuestion();
+    </script>
+</body>
+</html>
